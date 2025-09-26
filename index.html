@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Click for Love 💖</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffe6f0;
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+  @keyframes glow {
+    0% { background: #ffe6f0; }
+    50% { background: #ffd1e6; }
+    100% { background: #ffe6f0; }
+  }
+  #heart {
+    font-size: 80px;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+    z-index: 2;
+    animation: pulse 1s infinite;
+  }
+  #heart.grow {
+    transform: scale(2);
+    animation: none;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  #message {
+    margin-top: 20px;
+    font-size: 28px;
+    color: #ff1a75;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s;
+    z-index: 1;
+  }
+  .floating-heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatRandom 3s linear forwards;
+    z-index: 0;
+  }
+  @keyframes floatRandom {
+    0% { transform: translate(0,0) rotate(0deg) scale(1); opacity: 1; }
+    100% { 
+      transform: translate(var(--x), var(--y)) rotate(360deg) scale(1.5); 
+      opacity: 0; 
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="heart">💖</div>
+<div id="message">I love you so much Ruu 💕</div>
+
+<!-- Audio -->
+<audio id="popSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+<audio id="heartBeat" src="https://www.soundjay.com/button/sounds/beep-07.mp3"></audio>
+
+<script>
+  const heart = document.getElementById('heart');
+  const message = document.getElementById('message');
+  const popSound = document.getElementById('popSound');
+  const heartBeat = document.getElementById('heartBeat');
+
+  heart.addEventListener('click', () => {
+    heart.classList.add('grow');
+
+    // Play sounds
+    popSound.play();
+    setTimeout(() => heartBeat.play(), 200);
+
+    // Create full love explosion
+    for (let i = 0; i < 30; i++) {
+      const floatingHeart = document.createElement('div');
+      floatingHeart.classList.add('floating-heart');
+      floatingHeart.textContent = '💖';
+      floatingHeart.style.left = Math.random() * window.innerWidth + 'px';
+      floatingHeart.style.top = Math.random() * window.innerHeight + 'px';
+      floatingHeart.style.color = `hsl(${Math.random() * 360}, 80%, 70%)`;
+      floatingHeart.style.fontSize = (15 + Math.random() * 25) + 'px';
+      const randomX = (Math.random() - 0.5) * 600 + 'px';
+      const randomY = (Math.random() - 0.5) * 600 + 'px';
+      floatingHeart.style.setProperty('--x', randomX);
+      floatingHeart.style.setProperty('--y', randomY);
+      floatingHeart.style.animationDuration = (2 + Math.random() * 2) + 's';
+      document.body.appendChild(floatingHeart);
+
+      setTimeout(() => floatingHeart.remove(), 4000);
+    }
+
+    setTimeout(() => {
+      heart.style.display = 'none';
+      message.style.opacity = 1;
+    }, 700);
+  });
+</script>
+
+</body>
+</html>
